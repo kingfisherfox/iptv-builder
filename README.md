@@ -15,11 +15,42 @@ A Docker-based web app for building custom M3U playlists from the [iptv-org](htt
 
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running
 
-## Quick start
+## Quick start (Docker Hub)
+
+No code or IDE required. Just open a terminal and run:
 
 ```bash
-git clone https://github.com/kingfisherfox/iptv-builder.git
-cd iptv
+docker run -d -p 5001:5000 -v iptv_data:/app/data --name iptv-builder kingfisherfox/iptv_m3u_builder:latest
+```
+
+Open **http://localhost:5001** in your browser.
+
+To stop it:
+
+```bash
+docker stop iptv-builder
+```
+
+To start it again later (your progress is saved):
+
+```bash
+docker start iptv-builder
+```
+
+To update to the latest version:
+
+```bash
+docker stop iptv-builder
+docker rm iptv-builder
+docker pull kingfisherfox/iptv_m3u_builder:latest
+docker run -d -p 5001:5000 -v iptv_data:/app/data --name iptv-builder kingfisherfox/iptv_m3u_builder:latest
+```
+
+## Quick start (from source)
+
+```bash
+git clone https://github.com/kingfisherfox/iptv_m3u_builder.git
+cd iptv_m3u_builder
 docker compose up --build
 ```
 
@@ -68,25 +99,6 @@ The easiest way to make your playlist accessible to IPTV players:
 ### 6. Updating
 
 Click **Refetch** to pull the latest channels from the API. Your existing review progress is preserved — only new channels appear. Click **Reset** to start fresh.
-
-## Project structure
-
-```
-iptv/
-├── Dockerfile
-├── docker-compose.yml
-├── app/
-│   ├── app.py              # Flask API + M3U generation
-│   ├── db.py               # SQLite state (config, channel statuses)
-│   ├── iptv_fetch.py       # IPTV-ORG API data fetching
-│   ├── requirements.txt
-│   └── static/
-│       ├── index.html
-│       ├── ui.js
-│       └── app.js
-├── data/                    # Runtime data (gitignored)
-└── docs/
-```
 
 ## Credits
 
