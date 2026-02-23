@@ -18,7 +18,7 @@ A Docker-based web app for building custom M3U playlists from the [iptv-org](htt
 ## Quick start
 
 ```bash
-git clone <this-repo-url>
+git clone https://github.com/kingfisherfox/iptv-builder.git
 cd iptv
 docker compose up --build
 ```

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IPTV Channel Review</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.4.12"></script>
+  <style>
+    .toast{animation:slideIn .3s ease-out,fadeOut .4s ease-in 2.6s forwards}
+    @keyframes slideIn{from{transform:translateY(-1rem);opacity:0}to{transform:translateY(0);opacity:1}}
+    @keyframes fadeOut{to{opacity:0}}
+    .chevron{display:inline-block;transition:transform .2s}
+    .chevron.collapsed{transform:rotate(-90deg)}
+  </style>
+</head>
+<body class="bg-stone-50 text-stone-800 h-screen flex flex-col overflow-hidden">
+  <div id="toastContainer" class="fixed top-4 right-4 z-50 flex flex-col gap-2"></div>
+  <header class="sticky top-0 z-20 bg-white border-b border-stone-200 px-4 py-3 flex flex-wrap items-center gap-3 shrink-0">
+    <span class="text-stone-500 text-sm font-medium">Config</span>
+    <label class="flex items-center gap-2">
+      <span class="text-stone-600 text-sm">Country</span>
+      <input type="text" id="countryInput" list="countryList" placeholder="e.g. Thailand"
+        class="border border-stone-300 rounded px-3 py-1.5 text-sm w-44 focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500 outline-none" />
+      <datalist id="countryList"></datalist>
+    </label>
+    <label class="flex items-center gap-2">
+      <span class="text-stone-600 text-sm">Language</span>
+      <input type="text" id="languageInput" list="languageList" placeholder="e.g. English"
+        class="border border-stone-300 rounded px-3 py-1.5 text-sm w-36 focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500 outline-none" />
+      <datalist id="languageList"></datalist>
+    </label>
+    <button type="button" id="applyConfig" class="bg-amber-600 text-white text-sm px-3 py-1.5 rounded hover:bg-amber-700">Apply</button>
+    <button type="button" id="refetchBtn" class="bg-blue-600 text-white text-sm px-3 py-1.5 rounded hover:bg-blue-700">Refetch</button>
+    <button type="button" id="resetBtn" class="bg-stone-500 text-white text-sm px-3 py-1.5 rounded hover:bg-stone-600">Reset</button>
+    <button type="button" id="downloadBtn" class="ml-auto bg-emerald-600 text-white text-sm px-3 py-1.5 rounded hover:bg-emerald-700 disabled:opacity-50" disabled>Download M3U</button>
+  </header>
+  <main class="flex-1 flex min-h-0 overflow-hidden flex-nowrap">
+    <aside class="w-80 h-full bg-white border-r border-stone-200 flex flex-col min-h-0 shrink-0 overflow-hidden">
+      <div class="sticky top-0 z-10 px-3 py-2 border-b border-stone-200 text-stone-500 text-sm font-medium bg-white shrink-0">Channels</div>
+      <ul id="channelList" class="flex-1 overflow-y-auto min-h-0 p-1"></ul>
+    </aside>
+    <section class="flex-1 flex flex-col min-w-0 min-h-0 max-h-full p-4 overflow-hidden shrink-0 relative">
+      <div id="lockedOverlay" class="absolute inset-0 z-10 bg-stone-50/80 flex items-center justify-center">
+        <p class="text-stone-400 text-sm font-medium text-center px-4">Set your country and language, then click <strong>Apply</strong> to start.</p>
+      </div>
+      <div class="bg-stone-900 rounded-lg overflow-hidden aspect-video max-h-[60vh] flex items-center justify-center relative">
+        <video id="player" class="w-full h-full hidden" controls playsinline></video>
+        <p id="playerPlaceholder" class="text-stone-500 absolute">Loading channels…</p>
+      </div>
+      <div class="flex gap-2 mt-3 shrink-0">
+        <button type="button" id="btnWorks" class="px-4 py-2 rounded bg-emerald-600 text-white text-sm font-medium hover:bg-emerald-700 disabled:opacity-50" disabled>Add to list</button>
+        <button type="button" id="btnIgnore" class="px-4 py-2 rounded bg-sky-600 text-white text-sm font-medium hover:bg-sky-700 disabled:opacity-50" disabled>Ignore</button>
+        <button type="button" id="btnDoesntWork" class="px-4 py-2 rounded bg-red-600 text-white text-sm font-medium hover:bg-red-700 disabled:opacity-50" disabled>Doesn't work</button>
+        <button type="button" id="btnNotMyLang" class="px-4 py-2 rounded bg-amber-600 text-white text-sm font-medium hover:bg-amber-700 disabled:opacity-50" disabled>Not my language</button>
+      </div>
+      <div id="channelInfo" class="mt-3 p-3 bg-white border border-stone-200 rounded-lg text-sm text-stone-600 hidden">
+        <div class="font-medium text-stone-800 mb-2">Channel details</div>
+        <dl class="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1"></dl>
+      </div>
+    </section>
+  </main>
+  <script src="/ui.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>
