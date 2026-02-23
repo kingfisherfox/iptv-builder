@@ -9,5 +9,6 @@ COPY app/ ./app/
 
 ENV PYTHONUNBUFFERED=1
 
-EXPOSE 5000
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--timeout", "120", "app.app:app"]
+EXPOSE 8080
+VOLUME /app/data
+CMD ["gunicorn", "--bind", "0.0.0.0:8080", "--timeout", "120", "app.app:app"]
