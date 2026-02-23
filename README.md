@@ -20,10 +20,12 @@ A Docker-based web app for building custom M3U playlists from the [iptv-org](htt
 No code or IDE required. Just open a terminal and run:
 
 ```bash
-docker run -d -p 5001:5000 -v iptv_data:/app/data --name iptv-builder kingfisherfox/iptv_m3u_builder:latest
+docker run -d -p 8080:8080 -v iptv_data:/app/data --name iptv-builder kingfisherfox/iptv_m3u_builder:latest
 ```
 
-Open **http://localhost:5001** in your browser.
+Open **http://localhost:8080** in your browser.
+
+**Or in Docker Desktop**: search for `kingfisherfox/iptv_m3u_builder`, click **Pull**, then **Run**. In the dialog, type `8080` in the **Host port** field (next to `:8080/tcp`), then click **Run**.
 
 To stop it:
 
@@ -43,7 +45,7 @@ To update to the latest version:
 docker stop iptv-builder
 docker rm iptv-builder
 docker pull kingfisherfox/iptv_m3u_builder:latest
-docker run -d -p 5001:5000 -v iptv_data:/app/data --name iptv-builder kingfisherfox/iptv_m3u_builder:latest
+docker run -d -p 8080:8080 -v iptv_data:/app/data --name iptv-builder kingfisherfox/iptv_m3u_builder:latest
 ```
 
 ## Quick start (from source)
@@ -54,7 +56,7 @@ cd iptv_m3u_builder
 docker compose up --build
 ```
 
-Open **http://localhost:5001** in your browser.
+Open **http://localhost:8080** in your browser.
 
 ## Usage
 
